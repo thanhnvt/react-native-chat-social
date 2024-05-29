@@ -1,0 +1,100 @@
+# OSX
+#
+.DS_Store
+
+# Xcode
+#
+build/
+Pods/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+*.iml
+*.hprof
+.cxx/
+# node.js
+#
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# BUCK
+buck-out/
+\.buckd/
+# *.keystore
+*.jks
+# !debug.keystore
+
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/
+
+*/fastlane/report.xml
+*/fastlane/Preview.html
+*/fastlane/screenshots
+
+# Bundle artifact
+*.jsbundle
+
+# CocoaPods
+Pods/
+# env
+.env.prod
+# .env.dev
+.env
+env.sh
+# .env.production
+
+# google
+# google-services.json
+# react-native-config codegeng
+ios/tmp.xcconfig
+
+# ios/GoogleService-Info.plist
+
+# google-services*.json
+# GoogleService-Info*.plist
+
+profile
+/fastlane/README.md
+/fastlane/report.xml
+
+# customer
+ios/Podfile.lock
+src/i18n/Link
+
+# Cache folder (now is cache prettier --write)
+.cache
+pscript/
+vendor
+
+run.sh
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

@@ -1,0 +1,16 @@
+current directory: /Users/macos/developer/react-native/reactNativeChatFireBase/vendor/bundle/ruby/3.0.0/gems/nkf-0.2.0/ext/nkf
+/Users/macos/.rvm/rubies/ruby-3.0.0/bin/ruby -I /Users/macos/.rvm/rubies/ruby-3.0.0/lib/ruby/3.0.0 -r ./siteconf20240517-91109-yxifgv.rb extconf.rb
+creating Makefile
+
+current directory: /Users/macos/developer/react-native/reactNativeChatFireBase/vendor/bundle/ruby/3.0.0/gems/nkf-0.2.0/ext/nkf
+make "DESTDIR=" clean
+
+current directory: /Users/macos/developer/react-native/reactNativeChatFireBase/vendor/bundle/ruby/3.0.0/gems/nkf-0.2.0/ext/nkf
+make "DESTDIR="
+compiling nkf.c
+linking shared-object nkf.bundle
+ld: warning: -multiply_defined is obsolete
+
+current directory: /Users/macos/developer/react-native/reactNativeChatFireBase/vendor/bundle/ruby/3.0.0/gems/nkf-0.2.0/ext/nkf
+make "DESTDIR=" install
+/opt/homebrew/opt/coreutils/bin/ginstall -c -m 0755 nkf.bundle ./.gem.20240517-91109-7q6o3e
