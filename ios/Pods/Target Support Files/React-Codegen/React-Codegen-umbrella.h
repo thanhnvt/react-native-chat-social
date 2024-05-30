@@ -35,6 +35,8 @@
 #import "rngesturehandler_codegenJSI.h"
 #import "rnscreens/rnscreens.h"
 #import "rnscreensJSI.h"
+#import "RNVectorIconsSpec/RNVectorIconsSpec.h"
+#import "RNVectorIconsSpecJSI.h"
 #import "safeareacontext/safeareacontext.h"
 #import "safeareacontextJSI.h"
 

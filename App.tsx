@@ -21,11 +21,9 @@ function App(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
       <NavigationContainer>
         <StackNavigator />
       </NavigationContainer>
-    </SafeAreaView>
   );
 }
 
