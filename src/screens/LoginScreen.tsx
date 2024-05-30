@@ -7,6 +7,7 @@ import {
   Pressable,
   Image,
   ScrollView,
+  Linking,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {
@@ -40,6 +41,10 @@ const AppInput = (props: any) => {
   );
 };
 
+const onViewInfo = () => {
+  Linking.canOpenURL("https://github.com/thanhnvt");
+};
+
 const LoginScreen = () => {
   return (
     <LinearGradient
@@ -47,10 +52,12 @@ const LoginScreen = () => {
       style={styles.container}
     >
       <View style={styles.infoContainer}>
-        <Image
-          source={{ uri: "https://imgur.com/ylPJBm7.png" }}
-          style={styles.avatar}
-        />
+        <Pressable onPress={onViewInfo} style={styles.avatar}>
+          <Image
+            source={{ uri: "https://imgur.com/ylPJBm7.png" }}
+            style={styles.avatar}
+          />
+        </Pressable>
         <Text style={styles.txtApp}>Chat Social App</Text>
       </View>
       <ScrollView style={styles.loginView} showsVerticalScrollIndicator={false}>
