@@ -40,7 +40,7 @@ const LoginScreen = (props: any) => {
 
   return (
     <LinearGradient
-      colors={[colors.white, primary[200], primary[500], "black"]}
+      colors={[colors.white, warning[200], warning[500], "red"]}
       style={styles.container}
     >
       <View style={styles.infoContainer}>

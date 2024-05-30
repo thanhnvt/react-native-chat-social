@@ -20,7 +20,11 @@ const MainStack = () => {
         component={SignUpScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name={ScreensName.CHAT_SCREEN} component={ChatScreen} />
+      <Stack.Screen
+        name={ScreensName.CHAT_SCREEN}
+        component={ChatScreen}
+        options={{ headerBackTitleVisible: false }}
+      />
     </Stack.Navigator>
   );
 };
