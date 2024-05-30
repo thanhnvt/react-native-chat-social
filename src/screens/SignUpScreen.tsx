@@ -21,23 +21,34 @@ import {
   warning,
 } from "../theme";
 import LinearGradient from "react-native-linear-gradient";
-import { ScreensName } from "../constant/screensName";
-import AppButton from "../components/AppButton";
-import AppInput from "../components/AppInput";
+
+const AppButton = (props: any) => {
+  return (
+    <View>
+      <Pressable style={styles.btnContainer} {...props}>
+        {props.children}
+      </Pressable>
+    </View>
+  );
+};
+
+const AppInput = (props: any) => {
+  return (
+    <View>
+      <Text style={styles.inputTitle}>{"User name"}</Text>
+      <TextInput {...props} />
+    </View>
+  );
+};
 
 const onViewInfo = () => {
   Linking.canOpenURL("https://github.com/thanhnvt");
 };
 
-const LoginScreen = (props: any) => {
-  const onSign = () => {
-    props?.navigation?.navigate(ScreensName.SIGN_UP_SCREEN);
-  };
-
-  const onLogin = () => {
-    props?.navigation?.navigate(ScreensName.CHAT_SCREEN);
-  };
-
+const SignUpScreen = (props: any) => {
+  const onGoBack=()=>{
+    props?.navigation?.goBack()
+  }
   return (
     <LinearGradient
       colors={[colors.white, primary[200], primary[500], "black"]}
@@ -58,33 +69,12 @@ const LoginScreen = (props: any) => {
           <View style={styles.inputContainer}>
             <AppInput placeholder="Enter userName" style={styles.inputStyle} />
             <AppInput placeholder="Enter password" style={styles.inputStyle} />
-            <AppButton onPress={onLogin}>
-              <Text style={styles.txtButton}>{"Login"}</Text>
+            <AppButton>
+              <Text style={styles.txtButton}>{"Sign up"}</Text>
             </AppButton>
-            <AppButton style={styles.btnContainerOutline} onPress={onSign}>
-              <Text style={styles.txtButtonSignUp}>{"Sign up"}</Text>
+            <AppButton style={styles.btnContainerOutline} onPress={onGoBack}>
+              <Text style={styles.txtButtonSignUp}>{"Login"}</Text>
             </AppButton>
-          </View>
-          <Text style={styles.txtLoginWith}>login with</Text>
-          <View style={styles.loginSocialContainer}>
-            <View
-              style={[
-                styles.btnLoginSocial,
-                { backgroundColor: colors.facebook },
-              ]}
-            >
-              <Icon name="facebook" size={20} color={colors.white} />
-            </View>
-            <View
-              style={[styles.btnLoginSocial, { backgroundColor: warning[700] }]}
-            >
-              <Icon name="google" size={20} color={colors.white} />
-            </View>
-            <View
-              style={[styles.btnLoginSocial, { backgroundColor: colors.black }]}
-            >
-              <Icon name="apple" size={20} color={colors.white} />
-            </View>
           </View>
         </View>
       </ScrollView>
@@ -95,6 +85,8 @@ const LoginScreen = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // justifyContent: "center",
+    // alignItems: "center",
     height: screenSize.height,
   },
   inputContainer: {
@@ -195,4 +187,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default SignUpScreen;
