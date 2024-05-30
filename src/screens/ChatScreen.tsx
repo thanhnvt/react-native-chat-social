@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   SafeAreaView,
@@ -6,43 +6,56 @@ import {
   Text,
   TextInput,
   View,
-} from 'react-native';
+} from "react-native";
+import { GiftedChat, IMessage } from "react-native-gifted-chat";
 
 const ChatScreen = () => {
+  const [messages, setMessages] = useState<Array<IMessage>>([]);
+  useEffect(() => {
+    setMessages([
+      {
+        _id: 1,
+        text: "Hello developer",
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: "React Native",
+          avatar: "https://imgur.com/ylPJBm7.png",
+        },
+      },
+    ]);
+  }, []);
+
+  const onSend = useCallback((messages: IMessage[] = []) => {
+    setMessages((previousMessages) =>
+      GiftedChat.append(previousMessages, messages)
+    );
+  }, []);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <FlatList
-          data={[1, 1, 1, 1, 1, 1, 1, 1]}
-          renderItem={() => (
-            <>
-              <Text>ChatScreen</Text>
-            </>
-          )}
-          contentContainerStyle={styles.list}
-          inverted
-        />
-        <View>
-          <TextInput placeholder="chat in here" style={styles.inputView} />
-        </View>
-      </View>
-    </SafeAreaView>
+    <GiftedChat
+      messages={messages}
+      onSend={(messages) => onSend(messages)}
+      user={{
+        _id: 1,
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'red',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "red",
   },
   list: {
     flex: 1,
-    backgroundColor: 'blue',
+    backgroundColor: "blue",
   },
   inputView: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
 });
 
