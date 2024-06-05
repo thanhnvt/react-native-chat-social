@@ -12,8 +12,9 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 
 import StackNavigator from "./src/navigation/StackNavigation";
 import { NavigationContainer } from "@react-navigation/native";
-import LinearGradient from "react-native-linear-gradient";
-import { primary, warning } from "./src/theme";
+
+import { store } from "./src/redux/store";
+import { Provider } from "react-redux";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
@@ -23,9 +24,11 @@ function App(): React.JSX.Element {
   };
 
   return (
-    <NavigationContainer>
-      <StackNavigator />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <StackNavigator />
+      </NavigationContainer>
+    </Provider>
   );
 }
 

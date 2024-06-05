@@ -16,6 +16,7 @@
     "@react-native-google-signin/google-signin": "^12.1.1",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/stack": "^6.3.29",
+    "@reduxjs/toolkit": "^2.2.5",
     "add": "^2.0.6",
     "react": "18.2.0",
     "react-native": "0.74.1",
@@ -26,6 +27,7 @@
     "react-native-screens": "^3.31.1",
     "react-native-static-safe-area-insets": "^2.2.0",
     "react-native-vector-icons": "^10.1.0",
+    "react-redux": "^9.1.2",
     "yarn": "^1.22.22"
   },
   "devDependencies": {
