@@ -24,6 +24,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { ScreensName } from "../constant/screensName";
 import AppButton from "../components/AppButton";
 import AppInput from "../components/AppInput";
+import { onGoogleButtonPress } from "../utils/loginUtils";
 
 const onViewInfo = () => {
   Linking.canOpenURL("https://github.com/thanhnvt");
@@ -38,9 +39,13 @@ const LoginScreen = (props: any) => {
     props?.navigation?.navigate(ScreensName.CHAT_SCREEN);
   };
 
+  const loginGoogle = async () => {
+    const results = onGoogleButtonPress();
+  };
+
   return (
     <LinearGradient
-      colors={[colors.white, warning[200], warning[500], "red"]}
+      colors={[colors.white, warning[200], warning[500], colors.white]}
       style={styles.container}
     >
       <View style={styles.infoContainer}>
@@ -67,24 +72,25 @@ const LoginScreen = (props: any) => {
           </View>
           <Text style={styles.txtLoginWith}>login with</Text>
           <View style={styles.loginSocialContainer}>
-            <View
+            <Pressable
               style={[
                 styles.btnLoginSocial,
                 { backgroundColor: colors.facebook },
               ]}
             >
               <Icon name="facebook" size={20} color={colors.white} />
-            </View>
-            <View
+            </Pressable>
+            <Pressable
               style={[styles.btnLoginSocial, { backgroundColor: warning[700] }]}
+              onPress={loginGoogle}
             >
               <Icon name="google" size={20} color={colors.white} />
-            </View>
-            <View
+            </Pressable>
+            <Pressable
               style={[styles.btnLoginSocial, { backgroundColor: colors.black }]}
             >
               <Icon name="apple" size={20} color={colors.white} />
-            </View>
+            </Pressable>
           </View>
         </View>
       </ScrollView>
