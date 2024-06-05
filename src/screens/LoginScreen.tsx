@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -25,12 +25,29 @@ import { ScreensName } from "../constant/screensName";
 import AppButton from "../components/AppButton";
 import AppInput from "../components/AppInput";
 import { onGoogleButtonPress } from "../utils/loginUtils";
+import { UserType } from "../types/UserTypes";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ASYNC_STORAGE_KEY } from "../constant/asyncStorageContant";
 
 const onViewInfo = () => {
   Linking.canOpenURL("https://github.com/thanhnvt");
 };
 
 const LoginScreen = (props: any) => {
+  useEffect(() => {
+    checkLogin();
+  }, []);
+
+  const checkLogin = async () => {
+    const userStr = await AsyncStorage.getItem(
+      ASYNC_STORAGE_KEY.USER_INFORMATION
+    );
+    if (userStr) {
+      console.log("checkLogin", userStr);
+      props?.navigation?.navigate(ScreensName.CHAT_SCREEN);
+    }
+  };
+
   const onSign = () => {
     props?.navigation?.navigate(ScreensName.SIGN_UP_SCREEN);
   };
@@ -40,12 +57,25 @@ const LoginScreen = (props: any) => {
   };
 
   const loginGoogle = async () => {
-    const results = onGoogleButtonPress();
+    const results = await onGoogleButtonPress();
+    if (results?.user) {
+      const user: UserType = {
+        userName: results?.user.displayName ?? "",
+        avatar: results?.user?.photoURL ?? "",
+        email: results?.user?.email ?? "",
+      };
+      await AsyncStorage.setItem(
+        ASYNC_STORAGE_KEY.USER_INFORMATION,
+        JSON.stringify(user)
+      );
+      props?.navigation?.navigate(ScreensName.CHAT_SCREEN);
+    }
+    console.log("loginGoogle", JSON.stringify(results));
   };
 
   return (
     <LinearGradient
-      colors={[colors.white, warning[200], warning[500], colors.white]}
+      colors={[defaultColor[50], defaultColor[200]]}
       style={styles.container}
     >
       <View style={styles.infoContainer}>
@@ -70,7 +100,7 @@ const LoginScreen = (props: any) => {
               <Text style={styles.txtButtonSignUp}>{"Sign up"}</Text>
             </AppButton>
           </View>
-          <Text style={styles.txtLoginWith}>login with</Text>
+          <Text style={styles.txtLoginWith}>Login with</Text>
           <View style={styles.loginSocialContainer}>
             <Pressable
               style={[
@@ -159,7 +189,7 @@ const styles = StyleSheet.create({
     borderColor: primary[500],
   },
   txtLoginWith: {
-    color: colors.white,
+    color: primary[700],
     marginTop: space.md,
     fontWeight: "500",
   },
@@ -171,7 +201,7 @@ const styles = StyleSheet.create({
     marginBottom: space.md * 2,
     fontWeight: "700",
     fontSize: fontSize["4xl"],
-    color: colors.white,
+    color: primary[700],
   },
   avatar: {
     height: 100,

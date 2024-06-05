@@ -10,6 +10,7 @@ ${PODS_CONFIGURATION_BUILD_DIR}/FirebaseAuth/FirebaseAuth_Privacy.bundle
 ${PODS_CONFIGURATION_BUILD_DIR}/GTMAppAuth/GTMAppAuth_Privacy.bundle
 ${PODS_CONFIGURATION_BUILD_DIR}/GTMSessionFetcher/GTMSessionFetcher_Core_Privacy.bundle
 ${PODS_CONFIGURATION_BUILD_DIR}/GoogleSignIn/GoogleSignIn.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/RNCAsyncStorage/RNCAsyncStorage_resources.bundle
 ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf
 ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf
 ${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf
