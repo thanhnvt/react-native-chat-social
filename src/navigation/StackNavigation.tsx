@@ -4,12 +4,18 @@ import { ScreensName } from "../constant/screensName";
 import LoginScreen from "../screens/LoginScreen";
 import ChatScreen from "../screens/ChatScreen";
 import SignUpScreen from "../screens/SignUpScreen";
+import UsersScreen from "../screens/UsersScreen";
 
 const Stack = createStackNavigator();
 
 const MainStack = () => {
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name={ScreensName.CHAT_SCREEN}
+        component={UsersScreen}
+        options={{ headerBackTitleVisible: false, headerShown: false }}
+      />
       <Stack.Screen
         name={ScreensName.LOGIN_SCREEN}
         component={LoginScreen}
@@ -19,11 +25,6 @@ const MainStack = () => {
         name={ScreensName.SIGN_UP_SCREEN}
         component={SignUpScreen}
         options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name={ScreensName.CHAT_SCREEN}
-        component={ChatScreen}
-        options={{ headerBackTitleVisible: false }}
       />
     </Stack.Navigator>
   );
