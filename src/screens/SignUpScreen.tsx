@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -21,35 +21,51 @@ import {
   warning,
 } from "../theme";
 import LinearGradient from "react-native-linear-gradient";
-
-const AppButton = (props: any) => {
-  return (
-    <View>
-      <Pressable style={styles.btnContainer} {...props}>
-        {props.children}
-      </Pressable>
-    </View>
-  );
-};
-
-const AppInput = (props: any) => {
-  const { title } = props;
-  return (
-    <View>
-      <Text style={styles.inputTitle}>{title}</Text>
-      <TextInput {...props} />
-    </View>
-  );
-};
+import { UserType } from "../types/UserTypes";
+import { registerUser } from "../utils/chatUtils";
+import { CommonActions } from "@react-navigation/native";
+import { ScreensName } from "../constant/screensName";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ASYNC_STORAGE_KEY } from "../constant/asyncStorageContant";
+import AppInput from "../components/AppInput";
+import AppButton from "../components/AppButton";
 
 const onViewInfo = () => {
   Linking.canOpenURL("https://github.com/thanhnvt");
 };
 
 const SignUpScreen = (props: any) => {
+  const [userInfo, updateUserInfo] = useState<any>({});
+
   const onGoBack = () => {
     props?.navigation?.goBack();
   };
+
+  const onUpdateUserInfo = (value: string, type: string) => {
+    userInfo[type] = value;
+    updateUserInfo(userInfo);
+  };
+
+  const onSignUp = async () => {
+    console.log("updateUserInfo", userInfo);
+    const _id = new Date().getTime();
+    await registerUser(_id + "", { ...userInfo, _id });
+    await AsyncStorage.setItem(
+      ASYNC_STORAGE_KEY.USER_INFORMATION,
+      JSON.stringify({ ...userInfo, _id })
+    );
+    gotoChatScreen();
+  };
+
+  const gotoChatScreen = () => {
+    props?.navigation?.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: ScreensName.USERS_SCREEN }],
+      })
+    );
+  };
+
   return (
     <LinearGradient
       colors={[defaultColor[50], defaultColor[200]]}
@@ -58,11 +74,15 @@ const SignUpScreen = (props: any) => {
       <View style={styles.infoContainer}>
         <Pressable onPress={onViewInfo} style={styles.avatar}>
           <Image
-            source={{ uri: "https://imgur.com/ylPJBm7.png" }}
+            source={{
+              uri: userInfo?.avatar ?? "https://imgur.com/ylPJBm7.png",
+            }}
             style={styles.avatar}
           />
         </Pressable>
-        <Text style={styles.txtApp}>Chat Social App</Text>
+        <Text style={styles.txtApp}>
+          {userInfo?.userName ?? "Chat Social App"}
+        </Text>
       </View>
       <ScrollView style={styles.loginView} showsVerticalScrollIndicator={false}>
         <View style={styles.header} />
@@ -72,25 +92,35 @@ const SignUpScreen = (props: any) => {
               placeholder="Enter avatar"
               title={"Avatar"}
               style={styles.inputStyle}
+              onChangeText={(value: string) =>
+                onUpdateUserInfo(value, "avatar")
+              }
+            />
+            <AppInput
+              placeholder="Enter full name"
+              title={"Full name"}
+              style={styles.inputStyle}
+              onChangeText={(value: string) =>
+                onUpdateUserInfo(value, "userName")
+              }
             />
             <AppInput
               placeholder="Enter email"
               title={"Email"}
               style={styles.inputStyle}
               keyboardType="email-address"
+              onChangeText={(value: string) => onUpdateUserInfo(value, "email")}
             />
             <AppInput
               placeholder="Enter password"
               title={"Password"}
               style={styles.inputStyle}
+              onChangeText={(value: string) =>
+                onUpdateUserInfo(value, "password")
+              }
+              secureTextEntry={true}
             />
-            <AppInput
-              placeholder="Enter confirm password"
-              title={"Confirm password"}
-              style={styles.inputStyle}
-            />
-
-            <AppButton>
+            <AppButton onPress={onSignUp}>
               <Text style={styles.txtButton}>{"Sign up"}</Text>
             </AppButton>
             <AppButton style={styles.btnContainerOutline} onPress={onGoBack}>

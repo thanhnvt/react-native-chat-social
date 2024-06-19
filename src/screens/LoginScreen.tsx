@@ -34,7 +34,8 @@ import {
   COLLECTION_CHATS_DEMO,
   COLLECTION_USERS,
   DOC_USER,
-} from "../constant/chatContant";
+} from "../constant/chatConstant";
+import { registerUser } from "../utils/chatUtils";
 
 const onViewInfo = () => {
   Linking.canOpenURL("https://github.com/thanhnvt");
@@ -86,12 +87,8 @@ const LoginScreen = (props: any) => {
         ASYNC_STORAGE_KEY.USER_INFORMATION,
         JSON.stringify(user)
       );
-      await firestore()
-        .collection(COLLECTION_CHATS_DEMO)
-        .doc(DOC_USER)
-        .collection(COLLECTION_USERS)
-        .doc(results?.user?.uid ?? "")
-        .set(user);
+
+      await registerUser(results?.user?.uid ?? "", user);
 
       gotoChatScreen();
     }
@@ -115,8 +112,16 @@ const LoginScreen = (props: any) => {
         <View style={styles.header} />
         <View style={styles.contentContainer}>
           <View style={styles.inputContainer}>
-            <AppInput placeholder="Enter userName" style={styles.inputStyle} />
-            <AppInput placeholder="Enter password" style={styles.inputStyle} />
+            <AppInput
+              placeholder="Enter userName"
+              title={"User name"}
+              style={styles.inputStyle}
+            />
+            <AppInput
+              placeholder="Enter password"
+              title={"Password"}
+              style={styles.inputStyle}
+            />
             <AppButton onPress={onLogin}>
               <Text style={styles.txtButton}>{"Login"}</Text>
             </AppButton>

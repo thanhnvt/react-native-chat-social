@@ -1,25 +1,17 @@
 import React from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import {
-  colors,
-  defaultColor,
-  fontSize,
-  insets,
-  primary,
-  screenSize,
-  space,
-} from "../theme";
-
-const AppButton = (props: any) => {
+import { StyleSheet, Text, TextInput, View } from "react-native";
+import { defaultColor, space } from "../theme";
+const AppInput = (props: any) => {
+  const { title } = props;
   return (
     <View>
-      <Text style={styles.inputTitle}>{"User name"}</Text>
+      <Text style={styles.inputTitle}>{title}</Text>
       <TextInput {...props} />
     </View>
   );
 };
 
-export default AppButton;
+export default AppInput;
 
 const styles = StyleSheet.create({
   inputTitle: {

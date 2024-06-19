@@ -23,71 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ASYNC_STORAGE_KEY } from "../constant/asyncStorageContant";
 import { UserType } from "../types/UserTypes";
 import { createConversation, getUserByConversation } from "../utils/chatUtils";
-import {
-  COLLECTION_CHATS_DEMO,
-  COLLECTION_USERS,
-  DOC_CONVERSATIONS,
-  DOC_USER,
-} from "../constant/chatContant";
-
-const CONVERSATIONS = [
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Joshua",
-    lastMessenger: "Hello !",
-    date: "2024-06-10",
-    id: 1,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Joshua",
-    lastMessenger: "Ok! See you again",
-    date: "2024-05-10",
-    id: 2,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Joshua",
-    lastMessenger: "The business plan",
-    date: "2024-04-10",
-    id: 3,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Joshua",
-    lastMessenger: "Ok! See you again",
-    date: "2024-05-10",
-    id: 4,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Joshua",
-    lastMessenger: "The business plan",
-    date: "2024-04-10",
-    id: 5,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Joshua",
-    lastMessenger: "Hello !",
-    date: "2024-03-10",
-    id: 6,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Joshua",
-    lastMessenger: "Ok! See you again",
-    date: "2024-02-10",
-    id: 7,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Joshua",
-    lastMessenger: "The business plan",
-    date: "2024-01-10",
-    id: 8,
-  },
-];
+import { collectionUsers, docConversation } from "../constant/fireStore";
 
 const HeaderBar = (props: any) => {
   const { user } = props;
@@ -128,11 +64,7 @@ const UserView = (props: any) => {
   }, []);
 
   const getUsers = async () => {
-    const querySnapshot = fireStore()
-      .collection(COLLECTION_CHATS_DEMO)
-      .doc(DOC_USER)
-      .collection(COLLECTION_USERS);
-    const data = await querySnapshot.get();
+    const data = await collectionUsers.get();
     const users = [] as any;
     await data.forEach((element) => {
       const value = element.data();
@@ -188,10 +120,7 @@ const ConversationView = (props: any) => {
   };
 
   const getConversations = async () => {
-    const querySnapshot = await fireStore()
-      .collection(COLLECTION_CHATS_DEMO)
-      .doc(DOC_CONVERSATIONS)
-      .collection(user._id);
+    const querySnapshot = await docConversation.collection(user._id + "");
 
     const svs = [] as any;
     const data = await querySnapshot.get();
