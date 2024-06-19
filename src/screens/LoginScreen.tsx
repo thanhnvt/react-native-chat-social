@@ -28,6 +28,13 @@ import { onGoogleButtonPress } from "../utils/loginUtils";
 import { UserType } from "../types/UserTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ASYNC_STORAGE_KEY } from "../constant/asyncStorageContant";
+import firestore from "@react-native-firebase/firestore";
+import { CommonActions } from "@react-navigation/native";
+import {
+  COLLECTION_CHATS_DEMO,
+  COLLECTION_USERS,
+  DOC_USER,
+} from "../constant/chatContant";
 
 const onViewInfo = () => {
   Linking.canOpenURL("https://github.com/thanhnvt");
@@ -39,12 +46,12 @@ const LoginScreen = (props: any) => {
   }, []);
 
   const checkLogin = async () => {
-    const userStr = await AsyncStorage.getItem(
-      ASYNC_STORAGE_KEY.USER_INFORMATION
-    );
-    if (userStr) {
-      props?.navigation?.navigate(ScreensName.USERS_SCREEN);
-    }
+    // const userStr = await AsyncStorage.getItem(
+    //   ASYNC_STORAGE_KEY.USER_INFORMATION
+    // );
+    // if (userStr) {
+    //   props?.navigation?.navigate(ScreensName.USERS_SCREEN);
+    // }
   };
 
   const onSign = () => {
@@ -59,6 +66,7 @@ const LoginScreen = (props: any) => {
     const results = await onGoogleButtonPress();
     if (results?.user) {
       const user: UserType = {
+        _id: results?.user?.uid ?? "",
         userName: results?.user.displayName ?? "",
         avatar: results?.user?.photoURL ?? "",
         email: results?.user?.email ?? "",
@@ -67,9 +75,20 @@ const LoginScreen = (props: any) => {
         ASYNC_STORAGE_KEY.USER_INFORMATION,
         JSON.stringify(user)
       );
-      props?.navigation?.navigate(ScreensName.CHAT_SCREEN);
+      await firestore()
+        .collection(COLLECTION_CHATS_DEMO)
+        .doc(DOC_USER)
+        .collection(COLLECTION_USERS)
+        .doc(results?.user?.uid ?? "")
+        .set(user);
+
+      props?.navigation?.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: ScreensName.USERS_SCREEN }],
+        })
+      );
     }
-    console.log("loginGoogle", JSON.stringify(results));
   };
 
   return (

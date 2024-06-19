@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -18,49 +18,16 @@ import {
 } from "../theme";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { ScreensName } from "../constant/screensName";
-
-const USERS = [
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Joshua",
-    id: 1,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Martin",
-    id: 2,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Karen",
-    id: 3,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Martha",
-    id: 4,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Joshua",
-    id: 6,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Martin",
-    id: 7,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Karen",
-    id: 8,
-  },
-  {
-    image: "https://imgur.com/ylPJBm7.png",
-    name: "Martha",
-    id: 9,
-  },
-];
+import fireStore from "@react-native-firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ASYNC_STORAGE_KEY } from "../constant/asyncStorageContant";
+import { UserType } from "../types/UserTypes";
+import { createConversation } from "../utils/chatUtils";
+import {
+  COLLECTION_CHATS_DEMO,
+  COLLECTION_USERS,
+  DOC_USER,
+} from "../constant/chatContant";
 
 const CONVERSATIONS = [
   {
@@ -121,11 +88,12 @@ const CONVERSATIONS = [
   },
 ];
 
-const HeaderBar = () => {
+const HeaderBar = (props: any) => {
+  const { user } = props;
   return (
     <View style={styles.headerContainer}>
       <Image
-        source={{ uri: "https://imgur.com/ylPJBm7.png" }}
+        source={{ uri: user?.avatar }}
         style={styles.avatar}
         resizeMode="contain"
       />
@@ -150,20 +118,54 @@ const SearchBar = () => {
   );
 };
 
-const UserView = () => {
+const UserView = (props: any) => {
+  const { user } = props;
+  const [users, setUsers] = useState<Array<any>>([]);
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  const getUsers = async () => {
+    const querySnapshot = fireStore()
+      .collection(COLLECTION_CHATS_DEMO)
+      .doc(DOC_USER)
+      .collection(COLLECTION_USERS);
+    const data = await querySnapshot.get();
+    const users = [] as any;
+    await data.forEach((element) => {
+      const value = element.data();
+      if (value) {
+        users.push(value);
+      }
+    });
+    setUsers(users);
+  };
+
+  const onChatNow = async (desUser: UserType) => {
+    await createConversation(user, desUser);
+  };
+
   return (
     <View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {USERS.map((us) => (
-          <View key={us.id} style={styles.userItem}>
-            <Image
-              source={{ uri: "https://imgur.com/ylPJBm7.png" }}
-              style={styles.avatarUser}
-              resizeMode="contain"
-            />
-            <Text style={styles.txtUserName}>{us.name}</Text>
-          </View>
-        ))}
+        {users.map(
+          (us) =>
+            user._id !== us._id && (
+              <Pressable
+                key={us?._id}
+                style={styles.userItem}
+                onPress={() => onChatNow(us)}
+              >
+                <Image
+                  source={{ uri: us?.avatar }}
+                  style={styles.avatarUser}
+                  resizeMode="contain"
+                />
+                <Text style={styles.txtUserName}>{us.userName}</Text>
+              </Pressable>
+            )
+        )}
       </ScrollView>
     </View>
   );
@@ -197,12 +199,24 @@ const ConversationView = (props: any) => {
 };
 
 const UsersScreen = (props: any) => {
+  const [user, setUser] = useState<any>();
+  useEffect(() => {
+    getUser();
+  }, []);
+  const getUser = async () => {
+    const userStr = await AsyncStorage.getItem(
+      ASYNC_STORAGE_KEY.USER_INFORMATION
+    );
+    if (userStr) {
+      setUser(JSON.parse(userStr));
+    }
+  };
   return (
     <View style={styles.container}>
-      <HeaderBar />
+      <HeaderBar user={user} />
       <ScrollView style={styles.body}>
         <SearchBar />
-        <UserView />
+        <UserView user={user} />
         <ConversationView navigation={props?.navigation} />
       </ScrollView>
     </View>
@@ -241,6 +255,7 @@ const styles = StyleSheet.create({
   userItem: {
     marginTop: space.md,
     marginRight: space.md,
+    alignItems: "center",
   },
   txtUserName: {
     textAlign: "center",
