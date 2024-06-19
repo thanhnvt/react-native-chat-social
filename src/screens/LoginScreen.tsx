@@ -46,20 +46,29 @@ const LoginScreen = (props: any) => {
   }, []);
 
   const checkLogin = async () => {
-    // const userStr = await AsyncStorage.getItem(
-    //   ASYNC_STORAGE_KEY.USER_INFORMATION
-    // );
-    // if (userStr) {
-    //   props?.navigation?.navigate(ScreensName.USERS_SCREEN);
-    // }
+    const userStr = await AsyncStorage.getItem(
+      ASYNC_STORAGE_KEY.USER_INFORMATION
+    );
+    if (userStr) {
+      // gotoChatScreen();
+    }
   };
 
   const onSign = () => {
-    props?.navigation?.navigate(ScreensName.SIGN_UP_SCREEN);
+    gotoChatScreen();
+  };
+
+  const gotoChatScreen = () => {
+    props?.navigation?.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: ScreensName.USERS_SCREEN }],
+      })
+    );
   };
 
   const onLogin = () => {
-    props?.navigation?.navigate(ScreensName.CHAT_SCREEN);
+    gotoChatScreen();
   };
 
   const loginGoogle = async () => {
@@ -82,12 +91,7 @@ const LoginScreen = (props: any) => {
         .doc(results?.user?.uid ?? "")
         .set(user);
 
-      props?.navigation?.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: ScreensName.USERS_SCREEN }],
-        })
-      );
+      gotoChatScreen();
     }
   };
 

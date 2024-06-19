@@ -22,10 +22,11 @@ import fireStore from "@react-native-firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ASYNC_STORAGE_KEY } from "../constant/asyncStorageContant";
 import { UserType } from "../types/UserTypes";
-import { createConversation } from "../utils/chatUtils";
+import { createConversation, getUserByConversation } from "../utils/chatUtils";
 import {
   COLLECTION_CHATS_DEMO,
   COLLECTION_USERS,
+  DOC_CONVERSATIONS,
   DOC_USER,
 } from "../constant/chatContant";
 
@@ -172,28 +173,63 @@ const UserView = (props: any) => {
 };
 
 const ConversationView = (props: any) => {
+  const { navigation, user } = props;
+
+  const [conversations, onChangeConversation] = useState<Array<any>>([]);
+
+  useEffect(() => {
+    if (user?._id) {
+      getConversations();
+    }
+  }, [user]);
+
   const onGoChat = () => {
-    props?.navigation?.navigate(ScreensName.CHAT_SCREEN);
+    navigation?.navigate(ScreensName.CHAT_SCREEN);
   };
+
+  const getConversations = async () => {
+    const querySnapshot = await fireStore()
+      .collection(COLLECTION_CHATS_DEMO)
+      .doc(DOC_CONVERSATIONS)
+      .collection(user._id);
+
+    const svs = [] as any;
+    const data = await querySnapshot.get();
+    await data.forEach((element) => {
+      if (element.data()) {
+        svs.push(element.data());
+      }
+    });
+    onChangeConversation(svs);
+  };
+
+  console.log("aaaaaa", conversations);
+
+  if (!conversations?.length) return null;
   return (
     <View style={styles.conversationContainer}>
-      {CONVERSATIONS.map((cvt) => (
-        <Pressable
-          key={cvt.id}
-          style={styles.convertStationView}
-          onPress={onGoChat}
-        >
-          <Image
-            source={{ uri: "https://imgur.com/ylPJBm7.png" }}
-            style={styles.avatarConversation}
-            resizeMode="contain"
-          />
-          <View style={styles.convertStationInfoView}>
-            <Text style={styles.txtCvtName}>{cvt.name}</Text>
-            <Text style={styles.txtCvtLastMessenger}>{cvt.lastMessenger}</Text>
-          </View>
-        </Pressable>
-      ))}
+      {conversations.map((cvt) => {
+        const desUser = getUserByConversation(user, cvt?.users);
+        return (
+          <Pressable
+            key={cvt?._id}
+            style={styles.convertStationView}
+            onPress={onGoChat}
+          >
+            <Image
+              source={{ uri: desUser?.avatar }}
+              style={styles.avatarConversation}
+              resizeMode="contain"
+            />
+            <View style={styles.convertStationInfoView}>
+              <Text style={styles.txtCvtName}>{desUser.userName}</Text>
+              <Text style={styles.txtCvtLastMessenger}>
+                {cvt.lastMessenger ?? "have new messenger"}
+              </Text>
+            </View>
+          </Pressable>
+        );
+      })}
     </View>
   );
 };
@@ -217,7 +253,7 @@ const UsersScreen = (props: any) => {
       <ScrollView style={styles.body}>
         <SearchBar />
         <UserView user={user} />
-        <ConversationView navigation={props?.navigation} />
+        <ConversationView navigation={props?.navigation} user={user} />
       </ScrollView>
     </View>
   );

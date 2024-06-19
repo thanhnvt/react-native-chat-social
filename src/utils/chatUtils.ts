@@ -9,6 +9,7 @@ export const createConversation = async (user: UserType, desUser: UserType) => {
   const conversationId = user._id + desUser._id;
   const conversation = {
     users: [user, desUser],
+    _id: conversationId,
   };
 
   await firestore()
@@ -24,4 +25,9 @@ export const createConversation = async (user: UserType, desUser: UserType) => {
     .collection(desUser._id)
     .doc(conversationId)
     .set(conversation);
+};
+
+export const getUserByConversation = (user: any, users: any) => {
+  const data = users.filter((us: any) => us._id !== user._id);
+  return data[0] ?? {};
 };
