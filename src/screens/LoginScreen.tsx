@@ -43,8 +43,7 @@ const LoginScreen = (props: any) => {
       ASYNC_STORAGE_KEY.USER_INFORMATION
     );
     if (userStr) {
-      console.log("checkLogin", userStr);
-      props?.navigation?.navigate(ScreensName.CHAT_SCREEN);
+      props?.navigation?.navigate(ScreensName.USERS_SCREEN);
     }
   };
 

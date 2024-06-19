@@ -6,6 +6,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  Pressable,
 } from "react-native";
 import {
   colors,
@@ -16,6 +17,7 @@ import {
   space,
 } from "../theme";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { ScreensName } from "../constant/screensName";
 
 const USERS = [
   {
@@ -167,11 +169,18 @@ const UserView = () => {
   );
 };
 
-const ConversationView = () => {
+const ConversationView = (props: any) => {
+  const onGoChat = () => {
+    props?.navigation?.navigate(ScreensName.CHAT_SCREEN);
+  };
   return (
     <View style={styles.conversationContainer}>
       {CONVERSATIONS.map((cvt) => (
-        <View key={cvt.id} style={styles.convertStationView}>
+        <Pressable
+          key={cvt.id}
+          style={styles.convertStationView}
+          onPress={onGoChat}
+        >
           <Image
             source={{ uri: "https://imgur.com/ylPJBm7.png" }}
             style={styles.avatarConversation}
@@ -181,20 +190,20 @@ const ConversationView = () => {
             <Text style={styles.txtCvtName}>{cvt.name}</Text>
             <Text style={styles.txtCvtLastMessenger}>{cvt.lastMessenger}</Text>
           </View>
-        </View>
+        </Pressable>
       ))}
     </View>
   );
 };
 
-const UsersScreen = () => {
+const UsersScreen = (props: any) => {
   return (
     <View style={styles.container}>
       <HeaderBar />
       <ScrollView style={styles.body}>
         <SearchBar />
         <UserView />
-        <ConversationView />
+        <ConversationView navigation={props?.navigation} />
       </ScrollView>
     </View>
   );
@@ -257,7 +266,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignContent: "center",
     paddingHorizontal: space.md,
-    paddingBottom: space.sm
+    paddingBottom: space.sm,
   },
   avatar: {
     height: iconSize["3xl"],

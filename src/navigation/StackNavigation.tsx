@@ -12,15 +12,21 @@ const MainStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name={ScreensName.CHAT_SCREEN}
-        component={UsersScreen}
-        options={{ headerBackTitleVisible: false, headerShown: false }}
-      />
-      <Stack.Screen
         name={ScreensName.LOGIN_SCREEN}
         component={LoginScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name={ScreensName.USERS_SCREEN}
+        component={UsersScreen}
+        options={{ headerBackTitleVisible: false, headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreensName.CHAT_SCREEN}
+        component={ChatScreen}
+        options={{ headerBackTitleVisible: false }}
+      />
+
       <Stack.Screen
         name={ScreensName.SIGN_UP_SCREEN}
         component={SignUpScreen}
