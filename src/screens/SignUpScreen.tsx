@@ -33,9 +33,10 @@ const AppButton = (props: any) => {
 };
 
 const AppInput = (props: any) => {
+  const { title } = props;
   return (
     <View>
-      <Text style={styles.inputTitle}>{"User name"}</Text>
+      <Text style={styles.inputTitle}>{title}</Text>
       <TextInput {...props} />
     </View>
   );
@@ -46,12 +47,12 @@ const onViewInfo = () => {
 };
 
 const SignUpScreen = (props: any) => {
-  const onGoBack=()=>{
-    props?.navigation?.goBack()
-  }
+  const onGoBack = () => {
+    props?.navigation?.goBack();
+  };
   return (
     <LinearGradient
-      colors={[colors.white, primary[200], primary[500], "black"]}
+      colors={[defaultColor[50], defaultColor[200]]}
       style={styles.container}
     >
       <View style={styles.infoContainer}>
@@ -67,8 +68,28 @@ const SignUpScreen = (props: any) => {
         <View style={styles.header} />
         <View style={styles.contentContainer}>
           <View style={styles.inputContainer}>
-            <AppInput placeholder="Enter userName" style={styles.inputStyle} />
-            <AppInput placeholder="Enter password" style={styles.inputStyle} />
+            <AppInput
+              placeholder="Enter avatar"
+              title={"Avatar"}
+              style={styles.inputStyle}
+            />
+            <AppInput
+              placeholder="Enter email"
+              title={"Email"}
+              style={styles.inputStyle}
+              keyboardType="email-address"
+            />
+            <AppInput
+              placeholder="Enter password"
+              title={"Password"}
+              style={styles.inputStyle}
+            />
+            <AppInput
+              placeholder="Enter confirm password"
+              title={"Confirm password"}
+              style={styles.inputStyle}
+            />
+
             <AppButton>
               <Text style={styles.txtButton}>{"Sign up"}</Text>
             </AppButton>
@@ -157,7 +178,7 @@ const styles = StyleSheet.create({
     marginBottom: space.md * 2,
     fontWeight: "700",
     fontSize: fontSize["4xl"],
-    color: colors.white,
+    color: primary[800],
   },
   avatar: {
     height: 100,

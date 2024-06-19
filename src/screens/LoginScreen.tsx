@@ -41,6 +41,8 @@ const onViewInfo = () => {
 };
 
 const LoginScreen = (props: any) => {
+  const { navigation } = props;
+
   useEffect(() => {
     checkLogin();
   }, []);
@@ -54,8 +56,8 @@ const LoginScreen = (props: any) => {
     }
   };
 
-  const onSign = () => {
-    gotoChatScreen();
+  const onSignUp = () => {
+    navigation?.navigate(ScreensName.SIGN_UP_SCREEN);
   };
 
   const gotoChatScreen = () => {
@@ -118,7 +120,7 @@ const LoginScreen = (props: any) => {
             <AppButton onPress={onLogin}>
               <Text style={styles.txtButton}>{"Login"}</Text>
             </AppButton>
-            <AppButton style={styles.btnContainerOutline} onPress={onSign}>
+            <AppButton style={styles.btnContainerOutline} onPress={onSignUp}>
               <Text style={styles.txtButtonSignUp}>{"Sign up"}</Text>
             </AppButton>
           </View>
