@@ -22,7 +22,11 @@ import fireStore from "@react-native-firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ASYNC_STORAGE_KEY } from "../constant/asyncStorageContant";
 import { UserType } from "../types/UserTypes";
-import { createConversation, getUserByConversation } from "../utils/chatUtils";
+import {
+  createConversation,
+  getUserByConversation,
+  getUserDetail,
+} from "../utils/chatUtils";
 import { collectionUsers, docConversation } from "../constant/fireStore";
 
 const HeaderBar = (props: any) => {
@@ -79,12 +83,21 @@ const UserView = (props: any) => {
     await createConversation(user, desUser);
   };
 
+  const checkUser = (us?: any) => {
+    if (!us) return false;
+    if (user?._id === us?._id) return false;
+    if (!user?.connects?.length && !us?.connects?.length) return true;
+    const indexUser = user?.connects?.indexOf(us._id) ?? -1;
+    const indexUs = us?.connects?.indexOf(user._id) ?? -1;
+    return indexUser < 1 && indexUs < 0;
+  };
+
   return (
     <View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {users.map(
           (us) =>
-            user._id !== us._id && (
+            checkUser(us) && (
               <Pressable
                 key={us?._id}
                 style={styles.userItem}
@@ -132,8 +145,6 @@ const ConversationView = (props: any) => {
     onChangeConversation(svs);
   };
 
-  console.log("aaaaaa", conversations);
-
   if (!conversations?.length) return null;
   return (
     <View style={styles.conversationContainer}>
@@ -173,7 +184,9 @@ const UsersScreen = (props: any) => {
       ASYNC_STORAGE_KEY.USER_INFORMATION
     );
     if (userStr) {
-      setUser(JSON.parse(userStr));
+      const user = await getUserDetail(JSON.parse(userStr)._id + "");
+      console.log("user", user);
+      setUser(user);
     }
   };
   return (

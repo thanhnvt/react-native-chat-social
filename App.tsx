@@ -15,6 +15,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { store } from "./src/redux/store";
 import { Provider } from "react-redux";
+import "./src/constant/fireStore";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";

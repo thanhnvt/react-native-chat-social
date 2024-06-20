@@ -1,4 +1,4 @@
-package com.reactnativechatfirebase
+package com.reactnativechatwithfirebase
 
 import android.app.Application
 import com.facebook.react.PackageList

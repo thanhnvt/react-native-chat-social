@@ -4,4 +4,5 @@ export type UserType = {
   avatar: string;
   email: string;
   password?: string;
+  connects?: any
 };

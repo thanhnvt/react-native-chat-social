@@ -53,7 +53,7 @@ const LoginScreen = (props: any) => {
       ASYNC_STORAGE_KEY.USER_INFORMATION
     );
     if (userStr) {
-      // gotoChatScreen();
+      gotoChatScreen();
     }
   };
 
