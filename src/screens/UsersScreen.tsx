@@ -133,15 +133,13 @@ const ConversationView = (props: any) => {
   };
 
   const getConversations = async () => {
-    const querySnapshot = await docConversation.collection(user._id + "");
-
-    const svs = [] as any;
-    const data = await querySnapshot.get();
-    await data.forEach((element) => {
+    const querySnapshot = await docConversation.collection(user._id + "").get();
+    const svs = [];
+    for (const element of querySnapshot.docs) {
       if (element.data()) {
         svs.push(element.data());
       }
-    });
+    }
     onChangeConversation(svs);
   };
 
