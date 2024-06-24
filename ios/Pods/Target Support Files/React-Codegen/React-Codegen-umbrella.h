@@ -49,6 +49,8 @@
 #import "rngesturehandler_codegenJSI.h"
 #import "RNGoogleSignInCGen/RNGoogleSignInCGen.h"
 #import "RNGoogleSignInCGenJSI.h"
+#import "rnreanimated/rnreanimated.h"
+#import "rnreanimatedJSI.h"
 #import "rnscreens/rnscreens.h"
 #import "rnscreensJSI.h"
 #import "RNVectorIconsSpec/RNVectorIconsSpec.h"

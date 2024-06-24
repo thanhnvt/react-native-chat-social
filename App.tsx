@@ -6,7 +6,7 @@
  */
 
 import React from "react";
-import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
+import { SafeAreaView, StyleSheet, View, useColorScheme } from "react-native";
 
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
@@ -16,6 +16,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { store } from "./src/redux/store";
 import { Provider } from "react-redux";
 import "./src/constant/fireStore";
+import { colors, space } from "./src/theme";
+import LottieView from "lottie-react-native";
+import LoadingView from "./src/components/AppLoading";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
@@ -29,6 +32,7 @@ function App(): React.JSX.Element {
       <NavigationContainer>
         <StackNavigator />
       </NavigationContainer>
+      <LoadingView />
     </Provider>
   );
 }

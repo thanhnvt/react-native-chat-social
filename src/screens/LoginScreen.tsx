@@ -36,6 +36,8 @@ import {
   DOC_USER,
 } from "../constant/chatConstant";
 import { registerUser } from "../utils/chatUtils";
+import LottieView from "lottie-react-native";
+import event, { EMIT_ACTION } from "../constant/eventEmitter";
 
 const onViewInfo = () => {
   Linking.canOpenURL("https://github.com/thanhnvt");
@@ -49,11 +51,14 @@ const LoginScreen = (props: any) => {
   }, []);
 
   const checkLogin = async () => {
+    event.emit(EMIT_ACTION.HIDE_LOADING, {});
     const userStr = await AsyncStorage.getItem(
       ASYNC_STORAGE_KEY.USER_INFORMATION
     );
     if (userStr) {
       gotoChatScreen();
+    } else {
+      event.emit(EMIT_ACTION.HIDE_LOADING, {});
     }
   };
 
@@ -62,6 +67,7 @@ const LoginScreen = (props: any) => {
   };
 
   const gotoChatScreen = () => {
+    event.emit(EMIT_ACTION.HIDE_LOADING, {});
     props?.navigation?.dispatch(
       CommonActions.reset({
         index: 0,
@@ -71,10 +77,12 @@ const LoginScreen = (props: any) => {
   };
 
   const onLogin = () => {
-    gotoChatScreen();
+    event.emit(EMIT_ACTION.SHOW_LOADING, {});
+    // gotoChatScreen();
   };
 
   const loginGoogle = async () => {
+    event.emit(EMIT_ACTION.SHOW_LOADING, {});
     const results = await onGoogleButtonPress();
     if (results?.user) {
       const user: UserType = {
@@ -89,7 +97,6 @@ const LoginScreen = (props: any) => {
       );
 
       await registerUser(results?.user?.uid ?? "", user);
-
       gotoChatScreen();
     }
   };
