@@ -15,6 +15,7 @@ import {
   iconSize,
   insets,
   space,
+  success,
 } from "../theme";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { ScreensName } from "../constant/screensName";
@@ -103,11 +104,15 @@ const UserView = (props: any) => {
                 style={styles.userItem}
                 onPress={() => onChatNow(us)}
               >
-                <Image
-                  source={{ uri: us?.avatar }}
-                  style={styles.avatarUser}
-                  resizeMode="contain"
-                />
+                <View>
+                  <Image
+                    source={{ uri: us?.avatar }}
+                    style={styles.avatarUser}
+                    resizeMode="contain"
+                  />
+                  {/* {" "} */}
+                  <View style={styles.dot} />
+                </View>
                 <Text style={styles.txtUserName}>{us.userName}</Text>
               </Pressable>
             )
@@ -200,6 +205,17 @@ const UsersScreen = (props: any) => {
 };
 
 const styles = StyleSheet.create({
+  dot: {
+    width: space.md,
+    height: space.md,
+    borderRadius: space.md / 2,
+    backgroundColor: success[500],
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    borderWidth: 2,
+    borderColor: colors.white,
+  },
   conversationContainer: {
     // marginTop: space.sm,
   },
