@@ -5,6 +5,7 @@ import LoginScreen from "../screens/LoginScreen";
 import ChatScreen from "../screens/ChatScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import UsersScreen from "../screens/UsersScreen";
+import { colors } from "../theme";
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,10 @@ const MainStack = () => {
       <Stack.Screen
         name={ScreensName.CHAT_SCREEN}
         component={ChatScreen}
-        options={{ headerBackTitleVisible: false }}
+        options={{
+          headerBackTitleVisible: false,
+          headerTintColor: colors.black,
+        }}
       />
 
       <Stack.Screen
