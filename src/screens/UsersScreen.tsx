@@ -70,15 +70,12 @@ const UserView = (props: any) => {
   }, []);
 
   const getUsers = async () => {
-    const data = await collectionUsers.get();
-    const users = [] as any;
-    await data.forEach((element) => {
-      const value = element.data();
-      if (value) {
-        users.push(value);
-      }
+    await collectionUsers.onSnapshot((snapshot) => {
+      const users = snapshot.docs.map((doc) => {
+        return doc.data();
+      });
+      setUsers(users);
     });
-    setUsers(users);
   };
 
   const onChatNow = async (desUser: UserType) => {
@@ -111,7 +108,6 @@ const UserView = (props: any) => {
                     style={styles.avatarUser}
                     resizeMode="contain"
                   />
-                  {/* {" "} */}
                   <View style={styles.dot} />
                 </View>
                 <Text style={styles.txtUserName}>{us.userName}</Text>
@@ -308,4 +304,3 @@ const styles = StyleSheet.create({
 });
 
 export default UsersScreen;
-
