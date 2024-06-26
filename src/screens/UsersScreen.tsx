@@ -29,6 +29,7 @@ import {
   getUserDetail,
 } from "../utils/chatUtils";
 import { collectionUsers, docConversation } from "../constant/fireStore";
+import { hideLoading, showLoading } from "../utils/utils";
 
 const HeaderBar = (props: any) => {
   const { user } = props;
@@ -180,6 +181,7 @@ const ConversationView = (props: any) => {
 const UsersScreen = (props: any) => {
   const [user, setUser] = useState<any>();
   useEffect(() => {
+    showLoading();
     getUser();
   }, []);
   const getUser = async () => {
@@ -191,7 +193,9 @@ const UsersScreen = (props: any) => {
       console.log("user", user);
       setUser(user);
     }
+    hideLoading();
   };
+  if (!user) return null;
   return (
     <View style={styles.container}>
       <HeaderBar user={user} />
@@ -304,3 +308,4 @@ const styles = StyleSheet.create({
 });
 
 export default UsersScreen;
+

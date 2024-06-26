@@ -28,16 +28,10 @@ import { onGoogleButtonPress } from "../utils/loginUtils";
 import { UserType } from "../types/UserTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ASYNC_STORAGE_KEY } from "../constant/asyncStorageContant";
-import firestore from "@react-native-firebase/firestore";
 import { CommonActions } from "@react-navigation/native";
-import {
-  COLLECTION_CHATS_DEMO,
-  COLLECTION_USERS,
-  DOC_USER,
-} from "../constant/chatConstant";
 import { registerUser } from "../utils/chatUtils";
-import LottieView from "lottie-react-native";
 import event, { EMIT_ACTION } from "../constant/eventEmitter";
+import { hideLoading, showLoading } from "../utils/utils";
 
 const onViewInfo = () => {
   Linking.canOpenURL("https://github.com/thanhnvt");
@@ -51,14 +45,14 @@ const LoginScreen = (props: any) => {
   }, []);
 
   const checkLogin = async () => {
-    event.emit(EMIT_ACTION.HIDE_LOADING, {});
+    hideLoading()
     const userStr = await AsyncStorage.getItem(
       ASYNC_STORAGE_KEY.USER_INFORMATION
     );
     if (userStr) {
       gotoChatScreen();
     } else {
-      event.emit(EMIT_ACTION.HIDE_LOADING, {});
+      hideLoading()
     }
   };
 
@@ -77,12 +71,12 @@ const LoginScreen = (props: any) => {
   };
 
   const onLogin = () => {
-    event.emit(EMIT_ACTION.SHOW_LOADING, {});
+    showLoading();
     // gotoChatScreen();
   };
 
   const loginGoogle = async () => {
-    event.emit(EMIT_ACTION.SHOW_LOADING, {});
+    showLoading();
     const results = await onGoogleButtonPress();
     if (results?.user) {
       const user: UserType = {
